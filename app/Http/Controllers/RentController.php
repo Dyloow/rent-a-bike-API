@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rent;
 use Illuminate\Http\Request;
-use SupplementBacon\LaravelAPIToolkit\Http\Resources\PaginatedCollection;
-use SupplementBacon\LaravelAPIToolkit\Http\Resources\Smart;
+use SupplementBacon\LaravelAPIToolkit\Http\Resources\{PaginatedCollection, Smart};
 use SupplementBacon\LaravelPaginable\Requests\IndexPaginatedRequest;
 use Symfony\Component\HttpFoundation\Response;
+use App\Events\RentCreated;
+use App\Models\Rent;
 
 class RentController extends Controller
 {
@@ -40,6 +40,8 @@ class RentController extends Controller
             return response()->json(['error' => 'The bike is already rented during this period.'], 422);
         }
         $rent = Rent::create($validated);
+
+        event(new RentCreated($rent));
 
         return new Smart($rent);
     }
