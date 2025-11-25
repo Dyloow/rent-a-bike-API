@@ -36,9 +36,9 @@ class RentController extends Controller
                     });
             })
             ->first();
-        if ($existingRent) {
-            return response()->json(['error' => 'The bike is already rented during this period.'], 422);
-        }
+        // if ($existingRent) {
+        //     return response()->json(['error' => 'The bike is already rented during this period.'], 422);
+        // }
         $rent = Rent::create($validated);
 
         event(new RentCreated($rent));
