@@ -57,9 +57,10 @@ test('cannot create a bike with invalid data', function () {
     $response = post('/api/bikes', [
         'model' => '',
         'brand' => '',
-    ]);
+    ], ['Accept' => 'application/json']);
+
     $response->assertStatus(422)
-        ->assertSessionHasErrors(['model', 'brand', 'year']);
+        ->assertJsonValidationErrors(['model', 'brand', 'year']);
 });
 
 test('can update a bike', function () {
